@@ -9,17 +9,17 @@ const Login = ({ providers, session }) => {
         if (session) return Router.push("/");
     }, [session]);
 
-    console.log(session);
+    //console.log(session);
 
     if (session) return null;
     return (
         <div
-            className='d-flex justify-content-center align-items-center'
+            className='d-flex justify-content-center align-items-center bg-secondary'
             style={{ minHeight: "100vh" }}
         >
             <div
                 style={{ maxWidth: "450px", width: "100%" }}
-                className='border border-1 max-auto p-4 shadow'
+                className='border border-1 max-auto p-4 shadow bg-light'
             >
                 <h2
                     className='text-center fw-bolder text-uppercase'
@@ -27,10 +27,8 @@ const Login = ({ providers, session }) => {
                 >
                     Fancy Todo - APP
                 </h2>
-
                 <p className='text-center'>Login with NextAuth</p>
-
-                <BtnLogin provider={providers.google} bgColor='#f2573f' />
+                <BtnLogin provider={providers.google} bgColor='#4285F4' />
                 <BtnLogin provider={providers.github} bgColor='#444' />
             </div>
         </div>

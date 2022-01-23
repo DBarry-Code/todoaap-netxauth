@@ -1,9 +1,32 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Head from "next/head";
-import { signOut } from "next-auth/client";
+import { getSession } from "next-auth/client";
+import Navbar from "../components/navbar";
+import TodoInput from "../components/todoInput";
+import TodoItem from "../components/todoItem";
+import { toast } from "react-toastify";
 
 const Home = () => {
+    const [todos, setTodos] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchTodos = async () => {
+            try {
+                setLoading(true);
+                const res = await axios.get("/api/todo");
+                setTodos(res.data);
+                setLoading(false);
+            } catch (error) {
+                toast.error(error.response.data.msg);
+            }
+        };
+        fetchTodos();
+    }, []);
+
     return (
-        <div>
+        <>
             <Head>
                 <title>Fancy Todo App</title>
                 <meta
@@ -12,10 +35,36 @@ const Home = () => {
                 />
                 <link rel='icon' href='/favicon.ico' />
             </Head>
+            <Navbar />
+            <main>
+                <TodoInput />
+                <>
+                    {todos.map((todo) => (
+                        <TodoItem key={todo._id} todo={todo} />
+                    ))}
+                </>
 
-            <button onClick={() => signOut()}>signOut</button>
-        </div>
+                {loading && <h2 className='text-center'>Loading...</h2>}
+            </main>
+        </>
     );
 };
+
+export async function getServerSideProps(context) {
+    const session = await getSession(context);
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: "/login",
+                permanent: false,
+            },
+        };
+    }
+
+    return {
+        props: { session },
+    };
+}
 
 export default Home;

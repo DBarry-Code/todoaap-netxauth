@@ -1,11 +1,12 @@
 import React from "react";
 import { signIn } from "next-auth/client";
+import { FaGithub } from "react-icons/fa";
 
 const BtnLogin = ({ provider, bgColor, txtColor }) => {
     return (
         <div>
             <button
-                className='btn w-100 my-2 py-3'
+                className='btn btn-block w-100 my-2 py-3 m-auto'
                 style={{ background: `${bgColor}`, color: `${txtColor}` }}
                 onClick={() => signIn(provider.id)}
             >
