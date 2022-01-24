@@ -1,14 +1,23 @@
 import React, { useEffect } from "react";
 import { providers, getSession, csrfToken } from "next-auth/client";
 import Router from "next/router";
+import { toast } from "react-toastify";
 
 import OAuth from "../components/auth/OAuth";
 import Email from "../components/auth/Email";
+import Credential from "../components/auth/Credential";
 
 const Login = ({ providers, session, csrfToken }) => {
     useEffect(() => {
         if (session) return Router.push("/");
     }, [session]);
+
+    useEffect(() => {
+        if (Router.query.error) {
+            toast.error(Router.query.error);
+            return Router.push("/login");
+        }
+    }, []);
 
     if (session) return null;
     return (
@@ -27,7 +36,8 @@ const Login = ({ providers, session, csrfToken }) => {
                     Fancy Todo - APP
                 </h2>
                 <p className='text-center'>Login with NextAuth</p>
-
+                <Credential providers={providers} csrfToken={csrfToken} />
+                <div className='text-center'>✦ Or ✦</div>
                 <OAuth providers={providers} csrfToken={csrfToken} />
                 <Email providers={providers} csrfToken={csrfToken} />
             </div>
@@ -35,12 +45,14 @@ const Login = ({ providers, session, csrfToken }) => {
     );
 };
 
-Login.getInitialProps = async (context) => {
+export async function getServerSideProps(context) {
     return {
-        providers: await providers(context),
-        session: await getSession(context),
-        csrfToken: await csrfToken(context),
+        props: {
+            providers: await providers(context),
+            session: await getSession(context),
+            csrfToken: await csrfToken(context),
+        },
     };
-};
+}
 
 export default Login;

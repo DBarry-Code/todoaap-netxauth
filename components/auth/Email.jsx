@@ -11,18 +11,18 @@ const Email = ({ providers, csrfToken }) => {
             csrfToken={csrfToken}
             options={{ email }}
         >
-            <div>
-                <label htmlFor='Email address'></label>
+            <div className='form-floating'>
                 <input
-                    type='text'
-                    id='email'
-                    name='email'
+                    type='email'
+                    id='emailOnly'
+                    name='emailOnly'
                     className='form-control'
                     placeholder='email@example.com'
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
+                <label htmlFor='emailOnly'>Email address</label>
             </div>
         </BtnLogin>
     );
