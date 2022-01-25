@@ -11,6 +11,7 @@ const TodoInput = () => {
         try {
             const res = await axios.post("/api/todo", { todo });
             toast.success(res.data.msg);
+            window.location.reload();
             setTodo("");
         } catch (error) {
             toast.error(error.response.data.msg);

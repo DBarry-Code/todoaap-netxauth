@@ -37,7 +37,7 @@ const Home = () => {
             </Head>
             <Navbar />
             <main>
-                <TodoInput />
+                <TodoInput todos={todos} />
                 <>
                     {todos.map((todo) => (
                         <TodoItem key={todo._id} todo={todo} />

@@ -1,4 +1,4 @@
-import mongoose, { now } from "mongoose";
+import mongoose from "mongoose";
 
 const todoSchema = new mongoose.Schema({
     name: { type: String, required: true },
